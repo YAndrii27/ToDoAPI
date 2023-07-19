@@ -2,20 +2,19 @@ import { Entity, PrimaryGeneratedColumn, Column } from "typeorm"
 
 @Entity()
 export class Task {
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @PrimaryGeneratedColumn()
-    id: number
+  @Column()
+  ownerID: number;
 
-    @Column()
-    ownerID: number
+  @Column()
+  title: string;
 
-    @Column()
-    title: string
+  @Column()
+  description: string;
 
-    @Column()
-    description: string
-
-    @Column({default: undefined})
-    expiration: Date
+  @Column({ nullable: true, default: Date(), type: "text" })
+  expiration: string;
 
 }

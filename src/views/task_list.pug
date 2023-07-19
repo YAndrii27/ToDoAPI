@@ -1,0 +1,23 @@
+doctype html
+html
+  head
+    title To-Do App
+    link(rel='stylesheet', href='/css/styles.css')
+
+  body
+    header
+      h1 To-Do App
+
+    main
+      .panel
+        h2 Task List
+        ul#task-list
+          // Tasks will be dynamically added here using JavaScript
+
+      .details
+        h2 Task Details
+        p#task-title
+        p#task-expiration
+        p#task-description
+
+    script(src='/js/app.js')
