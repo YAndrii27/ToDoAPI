@@ -21,7 +21,7 @@ export async function saveTask(
   const task = new Task();
   task.title = title;
   task.description = description;
-  task.ownerID = ownerID;
+  task.owner = ownerID;
   if (expiration) {
     task.expiration = expiration;
   }

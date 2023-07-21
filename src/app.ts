@@ -3,8 +3,8 @@ import cors from 'cors';
 import path from 'path';
 
 import { AppDataSource } from "./data-source"
-import SaveTask from './handlers/SaveTask'
-import ReadTask from './handlers/ReadTask';
+import SaveTask from './handlers/tasks/SaveTask'
+import ReadTask from './handlers/tasks/ReadTask';
 
 AppDataSource.initialize();
 

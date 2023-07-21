@@ -1,5 +1,5 @@
 import express, { Request, Response } from 'express';
-import { saveTask } from '../typeorm-operations/SaveTask';
+import { saveTask } from '../../typeorm-operations/SaveTask';
 
 const router = express.Router();
 

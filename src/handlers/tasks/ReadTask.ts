@@ -1,5 +1,5 @@
 import express, { Request, Response } from 'express';
-import { readAllTasks, readTask } from '../typeorm-operations/ReadTask';
+import { readAllTasks, readTask } from '../../typeorm-operations/ReadTask';
 
 const router = express.Router();
 
@@ -14,7 +14,7 @@ router.post("/read", async (req: Request, res: Response) => {
     
     res.status(200).json({ 
         task_id: task.id, 
-        owner_id: task.ownerID,
+        owner_id: task.owner.id,
         title: task.title,
         description: task.description,
         expriration: task.expiration
