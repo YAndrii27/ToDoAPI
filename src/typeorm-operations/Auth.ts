@@ -2,14 +2,18 @@ import crypto from 'crypto';
 import { Repository } from 'typeorm';
 
 import { AppDataSource } from '../data-source';
-import { Account } from '../entity/Account';
+import { Account } from '../entities/User';
+import { Session } from '../entities/Session';
 
 const accountRepository: Repository<Account> = AppDataSource.getRepository(Account);
+const sessionRepository: Repository<Session> = AppDataSource.getRepository(Session);
 
-async function validateLogin(
+export async function validateAuthData(
   login: string,
   passwordHash?: string
 ): Promise<boolean> {
+
+  console.log(login, passwordHash);
 
   const qb = accountRepository
     .createQueryBuilder('account')
@@ -21,6 +25,12 @@ async function validateLogin(
 
   return Boolean(await qb.getOne());
 
+}
+
+
+export async function getAccount(login: string): Promise<Account> {
+  const account = await accountRepository.findOneBy({ login: login });
+  return account;
 }
 
 export async function getSalt(login: string): Promise<string> {
@@ -39,7 +49,7 @@ export async function attemptSignUp(
   passwordSalt: string
 ): Promise<boolean> {
   
-  const isLoginAvailable = await validateLogin(login);
+  const isLoginAvailable = await validateAuthData(login);
 
   if (isLoginAvailable) {
     const account = new Account();
@@ -53,4 +63,15 @@ export async function attemptSignUp(
   }
 
   return false;
+}
+
+export async function generateSession(login: string, ip: string, deleteAt?: number) {
+  const account = await getAccount(login);
+  const session = new Session();
+  session.account = account;
+  session.deleteAt = deleteAt;
+  session.lastIPAccessed = ip;
+  session.sessionId = crypto.randomBytes(32).toString('hex');
+  await sessionRepository.save(session);
+  return;
 }

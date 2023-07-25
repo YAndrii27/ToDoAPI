@@ -9,3 +9,4 @@ temp/
 *.sql
 typescript
 package-lock.json
+.env

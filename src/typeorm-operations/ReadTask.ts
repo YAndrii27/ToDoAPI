@@ -1,7 +1,7 @@
 import { Repository } from 'typeorm';
 
 import { AppDataSource } from '../data-source';
-import { Task } from '../entity/Task';
+import { Task } from '../entities/Task';
 
 const taskRepository: Repository<Task> = AppDataSource.getRepository(Task);
 

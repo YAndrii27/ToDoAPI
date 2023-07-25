@@ -1,9 +1,9 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm"
-
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany, Index } from "typeorm";
 import { Task } from "./Task";
 
+
 @Entity()
-export class Account {
+export class User {
     @PrimaryGeneratedColumn()
     id: number;
 
@@ -19,7 +19,8 @@ export class Account {
     @Column()
     passwordSalt: string;
 
-    @OneToMany(() => Task, (task) => Task.owner)
+    @Index()
+    @OneToMany(() => Task, (task) => Task)
     tasks: Task[];
 
 }

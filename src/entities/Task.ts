@@ -1,14 +1,14 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from "typeorm"
 
-import { Account } from "./Account";
+import { User } from "./User.";
 
 @Entity()
 export class Task {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => Account, (pwner) => Account.tasks)
-  owner: Account;
+  @ManyToOne(() => User)
+  owner: User;
 
   @Column()
   title: string;

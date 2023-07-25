@@ -1,5 +1,5 @@
 import { AppDataSource } from '../data-source';
-import { Task } from '../entity/Task';
+import { Task } from '../entities/Task';
 
 export async function saveTask(
   title: string,
