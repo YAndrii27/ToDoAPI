@@ -1,4 +1,6 @@
 import express from 'express';
+import rateLimit from 'express-rate-limit'
+
 import cors from 'cors';
 import path from 'path';
 import { env } from 'process';
@@ -13,9 +15,12 @@ import UserRoute from './routes/user.route';
 const app = express();
 loadDotenv();
 
+const limiter = rateLimit({windowMs: 1*60*1000, max: 40});
+
 app.set('views', path.join(__dirname, "..", "views"));
 app.set('view engine', 'pug');
 app.use(cors());
+app.use(limiter);
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "..", "static")));
 
