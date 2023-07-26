@@ -1,7 +1,7 @@
 import { Repository } from 'typeorm';
 
 import { AppDataSource } from '../configs/database.config';
-import { User } from '../entities/User.';
+import { User } from '../entities/user.entity';
 
 export class UserService {
 

@@ -1,32 +1,37 @@
-import 'reflect-metadata';
-
 import express from 'express';
 import cors from 'cors';
 import path from 'path';
+import { env } from 'process';
 
-import SaveTask from './handlers/tasks/SaveTask'
-import ReadTask from './handlers/tasks/ReadTask';
+import { loadDotenv } from './configs/env.config';
+import { AppDataSource } from './configs/database.config';
+import { authMiddleware } from './middlewares/auth.middleware';
 
-import Auth from './handlers/accounts/Auth';
-
-import { preCheckJSON } from './middlewares/pre';
+import TaskRoute from './routes/task.route';
+import UserRoute from './routes/user.route';
 
 const app = express();
-const host = "127.0.0.1";
-const port = 3000;
+loadDotenv();
 
-app.set('views', path.join(__dirname, "views"));
+app.set('views', path.join(__dirname, "..", "views"));
 app.set('view engine', 'pug');
-
 app.use(cors());
 app.use(express.json());
-app.use(preCheckJSON);
+app.use(express.static(path.join(__dirname, "..", "static")));
 
-app.use(express.static(path.join(__dirname, "static")));
+app.use("/task", authMiddleware, TaskRoute);
+app.use("/user", UserRoute);
 
-app.use('/task', [SaveTask, ReadTask]);
-app.use('/account', [Auth])
+(async () => {
+  await AppDataSource.initialize()
+	.then(() => {
+		console.log("Data source initialized");
+	})
+	.catch((e: Error) => {
+		console.error("Error during initialization ", e);
+	})
+});
 
-app.listen(port, host, () => {
-  return console.log(`Server is listening at http://${host}:${port}`);
+app.listen(Number(env.PORT), env.HOST, () => {
+  return console.log(`Server is listening at http://${env.HOST}:${env.PORT}`);
 });

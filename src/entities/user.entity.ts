@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany, Index } from "typeorm";
-import { Task } from "./Task";
+import { Task } from "./task.entity";
 
 
 @Entity()

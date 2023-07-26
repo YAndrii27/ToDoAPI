@@ -4,9 +4,13 @@ import { Request, Response } from 'express';
 
 import { UserService } from '../services/user.service';
 
-class UsersController {
+export class UsersController {
 
-  constructor(private userService: UserService) {}
+  private userService: UserService
+
+  constructor() {
+    this.userService = new UserService();
+  }
 
   async register(req: Request, res: Response) {
     const body = req.body;

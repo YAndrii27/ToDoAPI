@@ -1,4 +1,7 @@
 import path from "path";
 import dotenv from "dotenv";
+import { cwd } from "process";
 
-dotenv.config({ path: path.join(__dirname, "..") });
+export function loadDotenv() {
+  dotenv.config({ path: path.join(cwd(), ".env") });
+}
