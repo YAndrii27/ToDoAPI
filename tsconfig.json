@@ -1,15 +1,19 @@
 {
-   "compilerOptions": {
-     "lib": ["es5", "es6"],
-     "target": "es2017",
-     "module": "CommonJS",
-     "moduleResolution": "node",
-     "outDir": "./build",
-     "emitDecoratorMetadata": true,
-     "experimentalDecorators": true,
-     "sourceMap": true,
-     "allowSyntheticDefaultImports": true,
-     "esModuleInterop": true
-   }
- }
- 
+  // https://www.typescriptlang.org/tsconfig#compilerOptions
+  "compilerOptions": {
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "lib": ["es2020"],
+    "module": "CommonJS",
+    "preserveConstEnums": true,
+    "moduleResolution": "Node",
+    "sourceMap": true,
+    "target": "ESNext",
+    "types": ["node"],
+    "outDir": "./build",
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules"]
+}
