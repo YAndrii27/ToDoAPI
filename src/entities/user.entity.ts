@@ -16,9 +16,6 @@ export class User {
     @Column()
     passwordHash: string;
 
-    @Column()
-    passwordSalt: string;
-
     @OneToMany(() => Task, (task) => Task)
     tasks: Task[];
 

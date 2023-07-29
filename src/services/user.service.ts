@@ -1,3 +1,4 @@
+import argon2 from 'argon2';
 import { Repository } from 'typeorm';
 
 import { AppDataSource } from '../configs/database.config';
@@ -11,22 +12,26 @@ export class UserService {
 		this.userRepository = AppDataSource.getRepository(User);
 	}
 
-  async register(login: string, email: string, passwordHash: string, passwordSalt: string) : Promise<User> {
+  async register(login: string, email: string, password: string) : Promise<User> {
     const user = new User();
 
 		user.login = login;
     user.email = email;
-		user.passwordHash = passwordHash;
-		user.passwordSalt = passwordSalt;
+		user.passwordHash = await argon2.hash(password);
 
     await this.userRepository.save(user);
 
     return user;
   }
 
-  async login(login: string) : Promise<User> {
+  async login(login: string, password: string) : Promise<User | void> {
     const user = await this.userRepository.findOneBy({login: login});
-    return user;
+		const isPasswordCorrect = await argon2.verify(user.passwordHash, password)
+		if (isPasswordCorrect) {
+			return user;
+		} else {
+			return;
+		}
   }
 
 	async getUser(id: number): Promise<User>;

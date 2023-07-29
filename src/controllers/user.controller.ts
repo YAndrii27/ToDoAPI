@@ -14,7 +14,8 @@ export class UsersController {
 
   async register(req: Request, res: Response) {
     const body = req.body;
-    const user = await this.userService.register(body.login, body.email, body.passwordHash, body.passwordSalt);
+    console.log(body);
+    const user = await this.userService.register(body.login, body.email, body.password);
     const token = sign({ userId: user.id }, env.SECRET_KEY, {
       expiresIn: '4h',
     });
@@ -22,11 +23,15 @@ export class UsersController {
   }
 
   async login(req: Request, res: Response) {
-    const user = await this.userService.login(req.body);
-    const token = sign({ userId: user.id }, env.SECRET_KEY, {
-      expiresIn: '4h',
-    });
-    res.status(200).json({user, token});
+    const user = await this.userService.login(req.body.login, req.body.password);
+    if (user) {
+      const token = sign({ userId: user.id }, env.SECRET_KEY, {
+        expiresIn: '4h',
+      });
+      res.status(200).json({user, token});
+      return;
+    }
+    res.status(401).json({message: "Incorrect login or password"})
   }
 
   async getUser(req: Request, res: Response) {

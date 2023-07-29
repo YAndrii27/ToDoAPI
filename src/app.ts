@@ -1,5 +1,6 @@
 import "reflect-metadata";
 import express from 'express';
+import cookieParser from 'cookie-parser';
 import rateLimit from 'express-rate-limit';
 
 import cors from 'cors';
@@ -22,6 +23,8 @@ app.set('view engine', 'pug');
 app.use(cors());
 app.use(limiter);
 app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser())
 app.use(express.static(path.join(__dirname, "..", "static")));
 
 app.use("/task", authMiddleware, TaskRoute);
