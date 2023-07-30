@@ -14,12 +14,15 @@ export class UsersController {
 
   async register(req: Request, res: Response) {
     const body = req.body;
-    console.log(body);
     const user = await this.userService.register(body.login, body.email, body.password);
     const token = sign({ userId: user.id }, env.SECRET_KEY, {
       expiresIn: '4h',
     });
-    res.status(201).json({user, token});
+    res
+    .status(201)
+    .cookie("authToken", token, {maxAge: 4*60*60*1000})
+    .cookie("userID", user.id, {maxAge: 4*60*60*1000})
+    .redirect("/task");
   }
 
   async login(req: Request, res: Response) {
@@ -28,7 +31,11 @@ export class UsersController {
       const token = sign({ userId: user.id }, env.SECRET_KEY, {
         expiresIn: '4h',
       });
-      res.status(200).json({user, token});
+      res
+      .status(200)
+      .cookie("authToken", token, {maxAge: 4*60*60*1000})
+      .cookie("userID", user.id, {maxAge: 4*60*60*1000})
+      .redirect("/task");
       return;
     }
     res.status(401).json({message: "Incorrect login or password"})

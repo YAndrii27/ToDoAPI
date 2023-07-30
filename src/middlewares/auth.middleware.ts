@@ -3,7 +3,7 @@ import { verify } from 'jsonwebtoken';
 import { env } from 'process';
 
 export function authMiddleware(req: Request, res: Response, next: NextFunction) {
-  const token = req.header('Authorization')?.split(' ')[1];
+  const token = req.cookies["authToken"];
 
   if (!token) {
     return res.status(401).json({ message: 'Authorization token not found' });

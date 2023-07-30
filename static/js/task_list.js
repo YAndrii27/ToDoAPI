@@ -13,19 +13,18 @@ function getToken() {
   const cookies = cookieString.split(';');
   for (const cookie of cookies) {
     const [cookieName, cookieValue] = cookie.trim().split('=');
-    if (cookieName === "token") {
+    if (cookieName === "authToken") {
       return decodeURIComponent(cookieValue);
     }
   }
 }
 
-async function getTaskDetails(taskID, token) {
+async function getTaskDetails(taskID) {
   try {
     const response = await fetch('http://localhost:3000/task/read', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': "token " + token,
       },
       body: JSON.stringify({ task_id: taskID })
     });
@@ -49,13 +48,12 @@ async function displayTaskDetails(taskId) {
   taskDescription.textContent = `Description: ${taskDetails.description}`;
 }
 
-async function getAllTasks(ownerID, token) {
+async function getAllTasks(ownerID) {
     try {
         const response = await fetch('http://localhost:3000/task/read-all', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': "token" + token,
           },
           body: JSON.stringify({ owner_id: ownerID }),
         });
@@ -84,7 +82,7 @@ taskList.addEventListener('click', (event) => {
 async function populateTaskList() {
   // eslint-disable-next-line no-undef
   const fragment = document.createDocumentFragment();
-  const tasks = await getAllTasks(1, getToken());
+  const tasks = await getAllTasks(1);
   tasks.forEach((task) => {
     // eslint-disable-next-line no-undef
     const taskItem = document.createElement('li');

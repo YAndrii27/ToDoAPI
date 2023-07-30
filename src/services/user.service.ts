@@ -26,7 +26,9 @@ export class UserService {
 
   async login(login: string, password: string) : Promise<User | void> {
     const user = await this.userRepository.findOneBy({login: login});
-		const isPasswordCorrect = await argon2.verify(user.passwordHash, password)
+		const isPasswordCorrect = await argon2.verify(user.passwordHash, password).catch((e) => {
+			console.error("Error during verification ", e)
+		});
 		if (isPasswordCorrect) {
 			return user;
 		} else {

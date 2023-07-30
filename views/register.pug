@@ -1,9 +1,8 @@
 html
-  head
-    title Registration Form
+  include includes/head.pug
 
   body
-    h1 Registration
+    include includes/header.pug
 
     form(id="registrationForm", action="/user/register", method="POST")
       label(for="login") Login:
@@ -25,6 +24,8 @@ html
       br
       input(type="password", name="confirmPassword", id="confirmPassword", required)
       br
+
+      a(href="/user/login") Login
 
       input(type="submit", value="Register")
     
