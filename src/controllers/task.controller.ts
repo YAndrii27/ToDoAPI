@@ -21,8 +21,9 @@ export class TaskController {
     res.status(200).json(task);
   }
 
-  async getAllTaskByOwner(req: Request, res: Response) {
-    const ownerLoginOrId = req.body.login ?? req.body.id;
+  async getAllTaskByOwner(req: Request, res: Response): Promise<void> {
+    const ownerLoginOrId = req.body.login ?? req.body.owner_id;
+    console.log(ownerLoginOrId);
     const task_list: Task[] = await this.taskService.readAllTaskByOwner(ownerLoginOrId);
     res.status(200).json(task_list);
   }
