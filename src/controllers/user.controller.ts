@@ -33,8 +33,8 @@ export class UsersController {
       });
       res
       .status(200)
-      .cookie("authToken", token, {maxAge: 4*60*60*1000, httpOnly: true})
-      .cookie("userID", user.id, {maxAge: 4*60*60*1000, httpOnly: true})
+      .cookie("authToken", token, {maxAge: 4*60*60*1000, httpOnly: true, secure: true})
+      .cookie("userID", user.id, {maxAge: 4*60*60*1000, httpOnly: true, secure: true})
       .redirect("/task");
       return;
     }
