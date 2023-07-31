@@ -39,10 +39,8 @@ router.get("/", async (req: Request, res: Response) => {
   const authTokenCookie: string | undefined = req.cookies['authToken'];
 
   if (authTokenCookie) {
-    // If the authorization token cookie is present, redirect to task list
     res.redirect('../task/');
   } else {
-    // If the authorization token cookie is not present, redirect to login page
     res.redirect('/user/register');
   }
 });

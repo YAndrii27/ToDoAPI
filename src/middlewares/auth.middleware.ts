@@ -3,7 +3,6 @@ import { verify } from 'jsonwebtoken';
 import { env } from 'process';
 
 export function authMiddleware(req: Request, res: Response, next: NextFunction) {
-  console.log(req.cookies, req.headers)
   const token = req.cookies["authToken"];
 
   if (!token) {

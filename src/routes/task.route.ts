@@ -16,7 +16,6 @@ async function readTaskHandler(req: Request, res: Response) {
 
 async function readAllTaskHandler(req: Request, res: Response) {
   try {
-    console.log("reading..")
     await taskController.getAllTaskByOwner(req, res);
   } catch (error) {
     console.error("Error during reading tasks: ", error);
