@@ -6,8 +6,8 @@ export class TaskController {
 
   private taskService: TaskService;
 
-  constructor() {
-    this.taskService = new TaskService();
+  constructor(service: TaskService) {
+    this.taskService = service;
   }
 
   async createTask(req: Request, res: Response) {

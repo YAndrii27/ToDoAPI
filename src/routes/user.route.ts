@@ -1,9 +1,14 @@
 import express, {Request, Response} from "express";
 
 import { UsersController } from "../controllers/user.controller";
+import { AppDataSource } from '../configs/database.config';
+import { UserService } from '../services/user.service';
+import { User } from '../entities/user.entity';
 
 const router = express.Router();
-const userController = new UsersController();
+const userRepository = AppDataSource.getRepository(User)
+const userService = new UserService(userRepository);
+const userController = new UsersController(userService);
 
 async function loginHandler(req: Request, res: Response) {
   try {
