@@ -4,8 +4,12 @@ import { Task } from "../entities/task.entity";
 import { User } from "../entities/user.entity";
 
 export const AppDataSource = new DataSource({
-  type: "sqlite",
-  database: process.env.DATABASE_NAME,
+  type: "postgres",
+  username: process.env.PG_USERNAME,
+  password: process.env.PG_PASSWORD,
+  host: process.env.PG_HOST,
+  port: Number(process.env.PG_PORT),
+  database: process.env.PG_DATABASE,
   synchronize: true,
   logging: true,
   entities: [User, Task],

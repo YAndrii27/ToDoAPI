@@ -1,23 +1,22 @@
 import argon2 from 'argon2';
 import { Repository } from 'typeorm';
 
-import { AppDataSource } from '../configs/database.config';
 import { User } from '../entities/user.entity';
 
 export class UserService {
 
-	private userRepository: Repository<User>;
+	userRepository: Repository<User>;
 
-	constructor() {
-		this.userRepository = AppDataSource.getRepository(User);
+	constructor(repository: Repository<User>) {
+    this.userRepository = repository;
 	}
 
   async register(login: string, email: string, password: string) : Promise<User> {
     const user = new User();
 
-		user.login = login;
+    user.login = login;
     user.email = email;
-		user.passwordHash = await argon2.hash(password);
+    user.passwordHash = await argon2.hash(password);
 
     await this.userRepository.save(user);
 
@@ -40,10 +39,16 @@ export class UserService {
 	async getUser(login: string): Promise<User>;
 	async getUser(idOrlogin: number | string): Promise<User> {
 		if (typeof idOrlogin === "number") {
-			const user: User = await this.userRepository.findOneBy({ id: idOrlogin });
+			const user: User = await this.userRepository.findOne({
+				where: {id: idOrlogin },
+				select: {id: true, login: true, email: true}
+			});
 			return user;
 		} else {
-			const user: User = await this.userRepository.findOneBy({ login: idOrlogin });
+			const user: User = await this.userRepository.findOne({
+				where: {login: idOrlogin },
+				select: {id: true, login: true, email: true}
+			});
 			return user;
 		}
 	}

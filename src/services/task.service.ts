@@ -1,6 +1,5 @@
 import { Repository } from 'typeorm';
 
-import { AppDataSource } from '../configs/database.config';
 import { Task } from '../entities/task.entity';
 import { UserService } from './user.service';
 
@@ -9,9 +8,9 @@ export class TaskService {
 	private taskRepository: Repository<Task>;
   private userService: UserService
 
-	constructor() {
-		this.taskRepository = AppDataSource.getRepository(Task);
-    this.userService = new UserService();
+	constructor(repository: Repository<Task>, userService: UserService) {
+		this.taskRepository = repository;
+    this.userService = userService;
 	}
 
   async create(title: string, description: string, expiration: string, ownerLogin: string) : Promise<Task> {
@@ -49,6 +48,11 @@ export class TaskService {
       .getMany();
       return tasks;
     }
+  }
+
+  async readAllTasks() : Promise<Task[]> {
+    const tasks: Task[] = await this.taskRepository.find();
+    return tasks;
   }
 
   async updateTask(data) : Promise<Task> {

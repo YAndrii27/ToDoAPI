@@ -1,9 +1,14 @@
 import express, {Request, Response} from "express";
 
 import { UsersController } from "../controllers/user.controller";
+import { AppDataSource } from '../configs/database.config';
+import { UserService } from '../services/user.service';
+import { User } from '../entities/user.entity';
 
 const router = express.Router();
-const userController = new UsersController();
+const userRepository = AppDataSource.getRepository(User)
+const userService = new UserService(userRepository);
+const userController = new UsersController(userService);
 
 async function loginHandler(req: Request, res: Response) {
   try {
@@ -19,30 +24,12 @@ async function registerHandler(req: Request, res: Response) {
     await userController.register(req, res);
   } catch (error) {
     console.error("Error during login: ", error);
-    res.status(500).json({Message: "Internal error during login"});
+    res.status(500).json({Message: "Internal error during register"});
   }
 }
-
-router.get("/login", async (req: Request, res: Response) => {
-  res.render("login.pug")
-});
-
-router.get("/register", async (req: Request, res: Response) => {
-  res.render("register.pug");
-});
 
 router.post("/login", loginHandler);
 
 router.post("/register", registerHandler);
-
-router.get("/", async (req: Request, res: Response) => {
-  const authTokenCookie: string | undefined = req.cookies['authToken'];
-
-  if (authTokenCookie) {
-    res.redirect('../task/');
-  } else {
-    res.redirect('/user/register');
-  }
-});
 
 export default router;

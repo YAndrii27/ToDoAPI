@@ -8,8 +8,8 @@ export class UsersController {
 
   private userService: UserService
 
-  constructor() {
-    this.userService = new UserService();
+  constructor(service: UserService) {
+    this.userService = service;
   }
 
   async register(req: Request, res: Response) {
@@ -20,9 +20,9 @@ export class UsersController {
     });
     res
     .status(201)
-    .cookie("authToken", token, {maxAge: 4*60*60*1000, httpOnly: true, secure: true})
-    .cookie("userID", user.id, {maxAge: 4*60*60*1000, httpOnly: true, secure: true})
-    .redirect("/task");
+    .setHeader("Authorization", token)
+    .setHeader("userID", user.id)
+    .json({messsage: "Success"})
   }
 
   async login(req: Request, res: Response) {
@@ -31,11 +31,7 @@ export class UsersController {
       const token = sign({ userId: user.id }, env.SECRET_KEY, {
         expiresIn: '4h',
       });
-      res
-      .status(200)
-      .cookie("authToken", token, {maxAge: 4*60*60*1000, httpOnly: true, secure: true})
-      .cookie("userID", user.id, {maxAge: 4*60*60*1000, httpOnly: true, secure: true})
-      .redirect("/task");
+      res.status(200).setHeader("Authorization", token).setHeader("userID", user.id).json({messsage: "Success"});
       return;
     }
     res.status(401).json({message: "Incorrect login or password"})
