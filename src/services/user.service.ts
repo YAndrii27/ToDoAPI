@@ -39,10 +39,16 @@ export class UserService {
 	async getUser(login: string): Promise<User>;
 	async getUser(idOrlogin: number | string): Promise<User> {
 		if (typeof idOrlogin === "number") {
-			const user: User = await this.userRepository.findOneBy({ id: idOrlogin });
+			const user: User = await this.userRepository.findOne({
+				where: {id: idOrlogin },
+				select: {id: true, login: true, email: true}
+			});
 			return user;
 		} else {
-			const user: User = await this.userRepository.findOneBy({ login: idOrlogin });
+			const user: User = await this.userRepository.findOne({
+				where: {login: idOrlogin },
+				select: {id: true, login: true, email: true}
+			});
 			return user;
 		}
 	}

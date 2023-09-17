@@ -42,10 +42,6 @@ async function saveTaskHandler(req: Request, res: Response) {
   }
 }
 
-router.get("/", async (req: Request, res: Response) => {
-  res.render("task_list.pug");
-});
-
 router.post("/read", readTaskHandler);
 
 router.post("/read-all", readAllTaskHandler);
