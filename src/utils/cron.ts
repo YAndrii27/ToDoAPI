@@ -18,7 +18,7 @@ export function clearTasks() {
       tasks.forEach(async (task: Task) => {
         const now = Date.now();
         const parsedTime = Date.parse(task.expiration);
-        if (now >= parsedTime) {
+        if (now >= parsedTime && parsedTime > 1000) {
           await service.deleteTask(task.id);
           console.log("Removed task ", task.id, " because it's expired");
         }

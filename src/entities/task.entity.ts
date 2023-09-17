@@ -16,7 +16,7 @@ export class Task {
   @Column()
   description: string;
 
-  @Column({ nullable: true, default: Date(), type: "text" })
+  @Column({ nullable: true, default: new Date(Date.UTC(1970, 0, 1, 0, 0, 0, 0)), type: "text" })
   expiration: string;
 
 }
